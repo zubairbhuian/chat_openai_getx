@@ -1,5 +1,7 @@
+
 import 'package:get/get.dart';
 
 class ApplicationState {
-  final value = 0.obs;
+  var value = 0.obs;
+  RxBool  isTyping = true.obs;
 }
