@@ -1,6 +1,7 @@
 import 'package:chat_openai_getx/common/constants/app_color.dart';
 import 'package:chat_openai_getx/common/constants/app_constant.dart';
 import 'package:chat_openai_getx/common/constants/img_path.dart';
+import 'package:chat_openai_getx/common/widgets/chat_widget.dart';
 import 'package:chat_openai_getx/screens/application/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,13 +44,13 @@ class ApplicationView extends GetView<ApplicationController> {
           child: Obx(() => Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: msg.length,
-                        itemBuilder: (contex, index) => Text(
-                              msg[index]["msg"].toString(),
-                              style: const TextStyle(color: AppColor.textColor),
-                            )),
-                  ),
+                      child: ListView.builder(
+                    itemCount: msg.length,
+                    itemBuilder: (contex, index) => ChatWidget(
+                        msg: msg[index]["msg"],
+                        chatIndex:
+                            int.parse(msg[index]["msgIndex"].toString())),
+                  )),
                   if (controller.state.isTyping.value) ...[
                     SpinKitThreeBounce(
                       color: AppColor.textColor,
@@ -69,7 +70,7 @@ class ApplicationView extends GetView<ApplicationController> {
                               minLines: 1,
                               maxLines: 3,
                               keyboardType: TextInputType.multiline,
-                              autofocus: true,
+                              autofocus: controller.state.isTyping.value,
                               cursorColor: const Color.fromARGB(255, 255, 0, 0),
                               style: const TextStyle(
                                   color: AppColor.textColorLight),
