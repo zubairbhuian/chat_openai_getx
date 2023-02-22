@@ -22,5 +22,24 @@ class AppConstant {
       "msgIndex": 1
     },
     {"msg": "How are you?", "msgIndex": 0},
+    {"msg": "How are you?", "msgIndex": 0},
+    {
+      "msg":
+          "How are you? How are you? How are you?How are you?How are you?How are you?How are you?",
+      "msgIndex": 1
+    },
+    {"msg": "How are you?", "msgIndex": 0},
+    {
+      "msg":
+          "How are you? How are you? How are you?How are you?How are you?How are you?How are you?",
+      "msgIndex": 1
+    },
+    {"msg": "How are you?", "msgIndex": 0},
+    {
+      "msg":
+          "How are you? How are you? How are you?How are you?How are you?How are you?How are you?",
+      "msgIndex": 1
+    },
+    {"msg": "How are you?", "msgIndex": 0},
   ];
 }
