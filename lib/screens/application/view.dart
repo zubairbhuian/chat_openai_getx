@@ -10,96 +10,114 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({super.key});
-
-  AppBar _appbar() {
-    return AppBar(
-      elevation: 2,
-      centerTitle: false,
-      title: const Text(AppConstant.appTile),
-      leading: Padding(
-        padding: const EdgeInsets.only(bottom: 10, top: 10),
-        child: Align(
-            alignment: Alignment.topRight, child: Image.asset(ImgPath.gpt)),
-      ),
-      actions: [
-        IconButton(
-            splashRadius: 20,
-            onPressed: () {
-              controller.hidetext();
-            },
-            icon: const Icon(
-              Icons.more_vert,
-            )),
-        // ElevatedButton(onPressed: (){}, child:Icons.more_vert, )
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final msg = AppConstant.chatMessages;
     return Scaffold(
-      appBar: _appbar(),
-      body: SafeArea(
-          child: Obx(() => Column(
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: msg.length,
-                    itemBuilder: (contex, index) => ChatWidget(
-                        msg: msg[index]["msg"],
-                        chatIndex:
-                            int.parse(msg[index]["msgIndex"].toString())),
-                  )),
-                  if (controller.state.isTyping.value) ...[
-                    SpinKitThreeBounce(
-                      color: AppColor.textColor,
-                      size: 16.w,
-                    ),
-                    SizedBox(
-                      height: 5.w,
-                    ),
-                    Container(
-                      color: AppColor.primary,
-                      padding: EdgeInsets.only(
-                          top: 10.w, right: 5.w, bottom: 10.w, left: 20.w),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              minLines: 1,
-                              maxLines: 3,
-                              keyboardType: TextInputType.multiline,
-                              autofocus: controller.state.isTyping.value,
-                              cursorColor: const Color.fromARGB(255, 255, 0, 0),
-                              style: const TextStyle(
-                                  color: AppColor.textColorLight),
-                              decoration: const InputDecoration(
-                                  filled: true,
-                                  fillColor: AppColor.secondary,
-                                  hintText: 'How can i help you',
-                                  hintStyle:
-                                      TextStyle(color: AppColor.secondaryLight),
-                                  focusedBorder: InputBorder.none,
-                                  border: InputBorder.none),
-                              controller: controller.textEditingController,
-                              onSubmitted: (value) {},
-                            ),
-                          ),
-                          IconButton(
-                              splashRadius: 20,
-                              iconSize: 18.w,
-                              color: AppColor.successLight,
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.send,
-                              )),
-                        ],
+      appBar: AppBar(
+        elevation: 2,
+        centerTitle: false,
+        title: const Text(AppConstant.appTile),
+        leading: Padding(
+          padding: const EdgeInsets.only(bottom: 10, top: 10),
+          child: Align(
+              alignment: Alignment.topRight, child: Image.asset(ImgPath.gpt)),
+        ),
+        actions: [
+          IconButton(
+              splashRadius: 20,
+              onPressed: () {},
+              icon: const Icon(
+                Icons.more_vert,
+              )),
+          // ElevatedButton(onPressed: (){}, child:Icons.more_vert, )
+        ],
+      ),
+      body: Obx(() => SafeArea(
+              child: Column(
+            children: [
+              Expanded(
+                  child: ListView.builder(
+                itemCount: msg.length,
+                itemBuilder: (contex, index) => ChatWidget(
+                    msg: msg[index]["msg"],
+                    chatIndex: int.parse(msg[index]["msgIndex"].toString())),
+              )),
+              if (controller.state.isTyping.value) ...[
+                SpinKitThreeBounce(
+                  color: AppColor.textColor,
+                  size: 16.w,
+                ),
+                SizedBox(
+                  height: 5.w,
+                ),
+                Container(
+                  color: AppColor.primary,
+                  padding: EdgeInsets.only(
+                      top: 10.w, right: 5.w, bottom: 10.w, left: 5.w),
+                  child: Row(
+                    children: [
+                      IconButton(
+                          splashRadius: 20,
+                          iconSize: 18.w,
+                          color: AppColor.successLight,
+                          onPressed: () {
+                            showModalBottomSheet(
+                                backgroundColor: AppColor.secondaryLight,
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20))),
+                                builder: (_) => const SizedBox(
+                                      height: 300,
+                                    ));
+                          },
+                          icon: const Icon(
+                            Icons.settings,
+                          )),
+                      Expanded(
+                        child: TextField(
+                          minLines: 1,
+                          maxLines: 3,
+                          keyboardType: TextInputType.multiline,
+                          autofocus: controller.state.isTyping.value,
+                          cursorColor: const Color.fromARGB(255, 255, 0, 0),
+                          style:
+                              const TextStyle(color: AppColor.textColorLight),
+                          decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: AppColor.secondary,
+                              hintText: 'How can i help you',
+                              hintStyle:
+                                  TextStyle(color: AppColor.secondaryLight),
+                              focusedBorder: InputBorder.none,
+                              border: InputBorder.none),
+                          controller: controller.textEditingController,
+                          onSubmitted: (value) {},
+                        ),
                       ),
-                    )
-                  ],
-                ],
-              ))),
+                      IconButton(
+                          splashRadius: 20,
+                          iconSize: 18.w,
+                          color: AppColor.successLight,
+                          onPressed: () {
+                            showModalBottomSheet(
+                                backgroundColor: Colors.indigo,
+                                context: context,
+                                builder: (_) => const SizedBox(
+                                      height: 300,
+                                    ));
+                          },
+                          icon: const Icon(
+                            Icons.send,
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            ],
+          ))),
     );
   }
 }
