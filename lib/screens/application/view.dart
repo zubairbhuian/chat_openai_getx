@@ -3,6 +3,7 @@ import 'package:chat_openai_getx/common/constants/app_constant.dart';
 import 'package:chat_openai_getx/common/constants/img_path.dart';
 import 'package:chat_openai_getx/common/widgets/chat_widget.dart';
 import 'package:chat_openai_getx/screens/application/index.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -62,15 +63,35 @@ class ApplicationView extends GetView<ApplicationController> {
                           iconSize: 18.w,
                           color: AppColor.successLight,
                           onPressed: () {
+                            controller.picScrollController.dispose();
+                            controller.picScrollControllerInit();
                             showModalBottomSheet(
-                                backgroundColor: AppColor.secondaryLight,
+                                backgroundColor: AppColor.secondary,
                                 context: context,
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(20),
                                         topRight: Radius.circular(20))),
-                                builder: (_) => const SizedBox(
+                                builder: (_) => SizedBox(
                                       height: 300,
+                                      child: CupertinoPicker(
+                                          selectionOverlay:
+                                              CupertinoPickerDefaultSelectionOverlay(
+                                                  background:
+                                                      const Color.fromARGB(255,
+                                                              255, 255, 255)
+                                                          .withOpacity(.2)),
+                                          scrollController:
+                                              controller.picScrollController,
+                                          looping: true,
+                                          itemExtent: 64,
+                                          backgroundColor:
+                                              AppColor.secondaryLight,
+                                          onSelectedItemChanged: (index) {
+                                            controller.state.picItemIndex
+                                                .value = index;
+                                          },
+                                          children: controller.getModelItems!),
                                     ));
                           },
                           icon: const Icon(
@@ -102,12 +123,7 @@ class ApplicationView extends GetView<ApplicationController> {
                           iconSize: 18.w,
                           color: AppColor.successLight,
                           onPressed: () {
-                            showModalBottomSheet(
-                                backgroundColor: Colors.indigo,
-                                context: context,
-                                builder: (_) => const SizedBox(
-                                      height: 300,
-                                    ));
+                           
                           },
                           icon: const Icon(
                             Icons.send,

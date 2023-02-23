@@ -1,7 +1,8 @@
 import 'package:chat_openai_getx/common/constants/app_color.dart';
-import 'package:chat_openai_getx/common/constants/img_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../constants/img_path.dart';
 
 class ChatWidget extends StatelessWidget {
   final String msg;
@@ -20,8 +21,8 @@ class ChatWidget extends StatelessWidget {
           chatIndex == 0
               ? Image.asset(width: 21.w, height: 21.w, ImgPath.user)
               : Image.asset(width: 21.w, height: 21.w, ImgPath.chatgpt),
-          const SizedBox(
-            width: 10,
+           SizedBox(
+            width: 10.w,
           ),
           Expanded(
               child: Text(
@@ -34,8 +35,8 @@ class ChatWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(
-                      width: 10,
+                     SizedBox(
+                      width: 10.w,
                     ),
                     const Icon(Icons.thumb_up_alt_outlined,
                         color: AppColor.textColor),
