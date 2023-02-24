@@ -102,7 +102,10 @@ class ApplicationView extends GetView<ApplicationController> {
                           splashRadius: 20,
                           iconSize: 18.w,
                           color: AppColor.successLight,
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.feachTheChat();
+                            controller.textEditingController.clear();
+                          },
                           icon: const Icon(
                             Icons.send,
                           )),
@@ -123,7 +126,7 @@ class ApplicationView extends GetView<ApplicationController> {
               background:
                   const Color.fromARGB(255, 255, 255, 255).withOpacity(.2)),
           scrollController: controller.picScrollController,
-          looping: true,
+          // looping: true,
           itemExtent: 64,
           backgroundColor: AppColor.secondaryLight,
           onSelectedItemChanged: (index) {
