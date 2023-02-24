@@ -13,6 +13,10 @@ class ApplicationController extends GetxController {
   final textEditingController = TextEditingController();
   late FixedExtentScrollController picScrollController;
 
+  // handranTyping({required bool isTyping}) {
+  //    isTyping = state.isTyping.;
+  // }
+
   List<Widget>? get getModelItems {
     List<Widget>? modelsItems = List<Widget>.generate(
         state.picItems.length,
@@ -26,7 +30,7 @@ class ApplicationController extends GetxController {
     return modelsItems;
   }
 
-  Future<void> feachmModel() async {
+  Future feachmModel() async {
     var url = Uri.parse("$BASE_URL/models");
     try {
       var res =
@@ -35,8 +39,9 @@ class ApplicationController extends GetxController {
       for (var value in jesonRes["data"]) {
         state.picItems.add(value["id"]);
       }
+      print("feachmModel:$jesonRes");
     } catch (e) {
-      print("err:$e");
+      print("err feachmModel:$e");
     }
   }
 
