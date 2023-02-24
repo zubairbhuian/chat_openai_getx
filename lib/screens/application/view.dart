@@ -72,27 +72,7 @@ class ApplicationView extends GetView<ApplicationController> {
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(20),
                                         topRight: Radius.circular(20))),
-                                builder: (_) => SizedBox(
-                                      height: 300,
-                                      child: CupertinoPicker(
-                                          selectionOverlay:
-                                              CupertinoPickerDefaultSelectionOverlay(
-                                                  background:
-                                                      const Color.fromARGB(255,
-                                                              255, 255, 255)
-                                                          .withOpacity(.2)),
-                                          scrollController:
-                                              controller.picScrollController,
-                                          looping: true,
-                                          itemExtent: 64,
-                                          backgroundColor:
-                                              AppColor.secondaryLight,
-                                          onSelectedItemChanged: (index) {
-                                            controller.state.picItemIndex
-                                                .value = index;
-                                          },
-                                          children: controller.getModelItems!),
-                                    ));
+                                builder: (_) => selecWidgets());
                           },
                           icon: const Icon(
                             Icons.settings,
@@ -122,9 +102,7 @@ class ApplicationView extends GetView<ApplicationController> {
                           splashRadius: 20,
                           iconSize: 18.w,
                           color: AppColor.successLight,
-                          onPressed: () {
-                           
-                          },
+                          onPressed: () {},
                           icon: const Icon(
                             Icons.send,
                           )),
@@ -134,6 +112,24 @@ class ApplicationView extends GetView<ApplicationController> {
               ],
             ],
           ))),
+    );
+  }
+
+  SizedBox selecWidgets() {
+    return SizedBox(
+      height: 300.h,
+      child: CupertinoPicker(
+          selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+              background:
+                  const Color.fromARGB(255, 255, 255, 255).withOpacity(.2)),
+          scrollController: controller.picScrollController,
+          looping: true,
+          itemExtent: 64,
+          backgroundColor: AppColor.secondaryLight,
+          onSelectedItemChanged: (index) {
+            controller.state.picItemIndex.value = index;
+          },
+          children: controller.getModelItems!),
     );
   }
 }
