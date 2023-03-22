@@ -49,8 +49,6 @@ class ApplicationController extends GetxController {
   Future<void> feachTheChat() async {
     var url = Uri.parse("$BASE_URL/completions");
     try {
-      var re = textEditingController.text;
-      print("Zubair: $re");
       var res = await http.post(url,
           headers: {
             'Content-Type': 'application/json',

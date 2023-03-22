@@ -1,6 +1,6 @@
    const String BASE_URL = 'https://api.openai.com/v1';
    const String MY_TOKEN =
-      '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';
+      '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';
 
 
 class AppConstant {
