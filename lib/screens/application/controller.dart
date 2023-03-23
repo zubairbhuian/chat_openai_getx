@@ -13,6 +13,14 @@ class ApplicationController extends GetxController {
   final textEditingController = TextEditingController();
   late FixedExtentScrollController picScrollController;
   RxList myChatList = [].obs;
+  late ScrollController listScrollController;
+  late FocusNode focusNode;
+
+void scrollStartToEnd(){
+  listScrollController.animateTo(listScrollController.position.maxScrollExtent, duration: Duration(seconds: 2), curve:Curves.easeIn);
+}
+
+
 
   List<Widget>? get getModelItems {
     List<Widget>? modelsItems = List<Widget>.generate(
@@ -74,9 +82,7 @@ class ApplicationController extends GetxController {
       //       (index) => ChatModel(
       //           msg: jesonRes["choices"][index]["text"], chatIndex: 1));
       // }
-      myChatList
-          .add({"msg": jesonRes["choices"][0]["text"], "msgIndex": 1});
-
+      myChatList.add({"msg": jesonRes["choices"][0]["text"], "msgIndex": 1});
     } catch (e) {
       print("err:$e");
     }
@@ -92,6 +98,8 @@ class ApplicationController extends GetxController {
     picScrollController =
         FixedExtentScrollController(initialItem: state.picItemIndex.value);
     feachmModel();
+    listScrollController = ScrollController();
+    focusNode = FocusNode();
     super.onInit();
   }
 
@@ -99,5 +107,7 @@ class ApplicationController extends GetxController {
   void dispose() {
     picScrollController.dispose();
     super.dispose();
+    listScrollController.dispose();
+    focusNode.dispose();
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chat_openai_getx/common/constants/app_color.dart';
 import 'package:chat_openai_getx/common/constants/app_constant.dart';
 import 'package:chat_openai_getx/common/constants/img_path.dart';
@@ -42,6 +40,7 @@ class ApplicationView extends GetView<ApplicationController> {
             children: [
               Expanded(
                   child: ListView.builder(
+                controller: controller.listScrollController,
                 itemCount: controller.myChatList.length,
                 itemBuilder: (contex, index) => ChatWidget(
                     msg: controller.myChatList[index]["msg"],
@@ -83,6 +82,7 @@ class ApplicationView extends GetView<ApplicationController> {
                         )),
                     Expanded(
                       child: TextField(
+                        focusNode: controller.focusNode,
                         minLines: 1,
                         maxLines: 3,
                         keyboardType: TextInputType.multiline,
@@ -98,7 +98,9 @@ class ApplicationView extends GetView<ApplicationController> {
                             focusedBorder: InputBorder.none,
                             border: InputBorder.none),
                         controller: controller.textEditingController,
-                        onSubmitted: (value) {},
+                        onSubmitted: (value) async {
+                          await sendMSG();
+                        },
                       ),
                     ),
                     IconButton(
@@ -106,19 +108,7 @@ class ApplicationView extends GetView<ApplicationController> {
                         iconSize: 18.w,
                         color: AppColor.successLight,
                         onPressed: () async {
-                          if (controller.textEditingController.text.isEmpty) {
-                            Get.snackbar(
-                              "Comment Error",
-                              "You must write some valuable word !!"
-                            );
-                            return;
-                          }
-
-                          controller.addUserText();
-                          controller.state.isTyping.value = true;
-                          await controller.feachTheChat();
-                          controller.textEditingController.clear();
-                          controller.state.isTyping.value = false;
+                          await sendMSG();
                         },
                         icon: const Icon(
                           Icons.send,
@@ -147,5 +137,24 @@ class ApplicationView extends GetView<ApplicationController> {
           },
           children: controller.getModelItems!),
     );
+  }
+
+  Future<void> sendMSG() async {
+    if (controller.state.isTyping.value) {
+      Get.snackbar("Comment Error", "Wait Some Time");
+      return;
+    }
+    if (controller.textEditingController.text.isEmpty) {
+      Get.snackbar("Comment Error", "You must write some valuable word !!");
+      return;
+    }
+
+    controller.addUserText();
+    controller.state.isTyping.value = true;
+    await controller.feachTheChat();
+    controller.textEditingController.clear();
+    controller.focusNode.unfocus();
+    controller.state.isTyping.value = false;
+    controller.scrollStartToEnd();
   }
 }
