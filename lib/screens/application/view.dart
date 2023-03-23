@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chat_openai_getx/common/constants/app_color.dart';
 import 'package:chat_openai_getx/common/constants/app_constant.dart';
 import 'package:chat_openai_getx/common/constants/img_path.dart';
@@ -13,7 +15,6 @@ class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({super.key});
   @override
   Widget build(BuildContext context) {
-    final msg = AppConstant.chatMessages;
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
@@ -27,7 +28,9 @@ class ApplicationView extends GetView<ApplicationController> {
         actions: [
           IconButton(
               splashRadius: 20,
-              onPressed: () {},
+              onPressed: () {
+                print(controller.myChatList.value);
+              },
               icon: const Icon(
                 Icons.more_vert,
               )),
@@ -39,10 +42,10 @@ class ApplicationView extends GetView<ApplicationController> {
             children: [
               Expanded(
                   child: ListView.builder(
-                itemCount: msg.length,
+                itemCount: controller.myChatList.length,
                 itemBuilder: (contex, index) => ChatWidget(
-                    msg: msg[index]["msg"],
-                    chatIndex: int.parse(msg[index]["msgIndex"].toString())),
+                    msg: controller.myChatList[index]["msg"],
+                    chatIndex: controller.myChatList[index]["msgIndex"]),
               )),
               if (controller.state.isTyping.value) ...[
                 SpinKitThreeBounce(
@@ -102,12 +105,20 @@ class ApplicationView extends GetView<ApplicationController> {
                         splashRadius: 20,
                         iconSize: 18.w,
                         color: AppColor.successLight,
-                        onPressed: () async{
-                          controller.state.isTyping.value=true;
-                         await controller.feachTheChat();
+                        onPressed: () async {
+                          if (controller.textEditingController.text.isEmpty) {
+                            Get.snackbar(
+                              "Comment Error",
+                              "You must write some valuable word !!"
+                            );
+                            return;
+                          }
+
+                          controller.addUserText();
+                          controller.state.isTyping.value = true;
+                          await controller.feachTheChat();
                           controller.textEditingController.clear();
-                          controller.state.isTyping.value=false;
-                          print( 'is typing: ${controller.state.isTyping.value}');
+                          controller.state.isTyping.value = false;
                         },
                         icon: const Icon(
                           Icons.send,

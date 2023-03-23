@@ -5,4 +5,5 @@ class ApplicationState {
   RxBool isTyping = false.obs;
 
   RxList<dynamic> picItems = [].obs;
+
 }

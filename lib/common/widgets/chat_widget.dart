@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chat_openai_getx/common/constants/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,14 +22,28 @@ class ChatWidget extends StatelessWidget {
           chatIndex == 0
               ? Image.asset(width: 21.w, height: 21.w, ImgPath.user)
               : Image.asset(width: 21.w, height: 21.w, ImgPath.chatgpt),
-           SizedBox(
+          SizedBox(
             width: 10.w,
           ),
           Expanded(
-              child: Text(
-            msg,
-            style: TextStyle(fontSize: 16.sp, color: AppColor.textColor),
-          )),
+              child: chatIndex == 0
+                  ? Text(
+                      msg,
+                      style:
+                          TextStyle(fontSize: 16.sp, color: AppColor.textColor),
+                    )
+                  : AnimatedTextKit(
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          textStyle:  TextStyle(fontSize: 16.sp,color: AppColor.textColor),
+                          msg.trim(),
+                        )
+                      ],
+                      isRepeatingAnimation: false,
+                      repeatForever: false,
+                      displayFullTextOnTap: true,
+                      totalRepeatCount: 1,
+                    )),
         ],
       ),
     );

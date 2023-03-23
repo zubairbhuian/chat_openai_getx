@@ -12,10 +12,7 @@ class ApplicationController extends GetxController {
 
   final textEditingController = TextEditingController();
   late FixedExtentScrollController picScrollController;
-
-  // handranTyping({required bool isTyping}) {
-  //    isTyping = state.isTyping.;
-  // }
+  RxList myChatList = [].obs;
 
   List<Widget>? get getModelItems {
     List<Widget>? modelsItems = List<Widget>.generate(
@@ -39,10 +36,13 @@ class ApplicationController extends GetxController {
       for (var value in jesonRes["data"]) {
         state.picItems.add(value["id"]);
       }
-      print("feachmModel:$jesonRes");
     } catch (e) {
       print("err feachmModel:$e");
     }
+  }
+
+  Future<void> addUserText() async {
+    myChatList.add({"msg": textEditingController.text, "msgIndex": 0});
   }
 
   // Chat messages
@@ -58,7 +58,7 @@ class ApplicationController extends GetxController {
             "model": state.picItems[state.picItemIndex.value].toString(),
             "prompt": textEditingController.text,
             "temperature": 0,
-            "max_tokens": 1000
+            "max_tokens": 100
           }));
 
       Map jesonRes = jsonDecode(res.body);
@@ -66,14 +66,17 @@ class ApplicationController extends GetxController {
       if (jesonRes["error"] != null) {
         throw HttpException(jesonRes["errer"]["message"]);
       }
+
       // empty respose. choices length >0
-      // if (jesonRes["choices"].lenght > 0) {
-      //   print(jesonRes);
+      // if (jesonRes["choices"].le > 0) {
+      //   chatList = List.generate(
+      //       jesonRes["choices"],
+      //       (index) => ChatModel(
+      //           msg: jesonRes["choices"][index]["text"], chatIndex: 1));
       // }
-      // for (var value in jesonRes["data"]) {
-      //   state.picItems.add(value["id"]);
-      // }
-      print(jesonRes);
+      myChatList
+          .add({"msg": jesonRes["choices"][0]["text"], "msgIndex": 1});
+
     } catch (e) {
       print("err:$e");
     }
